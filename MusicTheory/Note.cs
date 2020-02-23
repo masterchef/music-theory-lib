@@ -31,7 +31,10 @@ namespace MusicTheory
             octave = groups["octave"].Value == "" ? 4 : int.Parse(groups["octave"].Value);
         }
 
-        
+
+        /**
+         * Returns string representation of a Note
+         */
         public string ToString(bool showOctave=false)
         {
             if (showOctave)

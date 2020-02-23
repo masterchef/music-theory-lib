@@ -83,7 +83,21 @@ namespace MusicTheory
 
 
         /**
-         * Calculates interval quality given two Notes
+         * Calculates interval quality given two Notes in the following way:
+         * 1. Finds which interval it represents: 1, 2, 3 .. 7
+         * 2. Sets QUALITY to PERFECT OR MAJOR given interval index
+         * 3. Computes the actual number of semitones between the notes
+         * 4. Computes the number of semitones expected for the expected interval
+         * 5. Finds the semitone difference between the actual and expected number of semitones
+         * 6. Updates the QUALITY based on a semitone offset.
+         *
+         * For example, qualitty for interval between C - E# Notes:
+         * 1. Interval index is 2
+         * 2. It's a MAJOR interval
+         * 3. Actual number of semitones is 5
+         * 4. For an unmodified MAJOR 3rd interval there should be 4 semitones
+         * 5. The difference is 5 - 4 = 1
+         * 6. MAJOR interval larger by 1 is AUGMENTED
          */
         internal static string Quality(Note startNote, Note endNote)
         {

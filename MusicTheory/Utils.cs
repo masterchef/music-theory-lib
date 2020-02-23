@@ -60,17 +60,30 @@ namespace MusicTheory
             };
         }
 
+        /**
+         * Returns pitch given it's index as rebased to C
+         */
         internal static string PitchFromIndex(int v)
         {
-            return pitchIndex[v];
+            return pitchIndex[v % MAX_PITCHES];
         }
 
+        /**
+         * Returns pitch index from a given pitch.
+         * Pitch index represents internal index of a pitch that can
+         * be used to compute the number of pitches or semitones
+         * between to notes.
+         */
         internal static int PitchIndex(string pitch)
         {
             return pitchMetadata[pitch][0];
         }
 
 
+        /**
+         * Finds number of semitones between pitches, accidentals and octaves by
+         * subtracting start pitch index from pitch index
+         */
         internal static int SemitoneCount(string startPitch, string startAccidental, int startOctave, string endPitch, string endAccidental, int endOctave)
         {
             return pitchMetadata[endPitch][1] + accidentalSemitoneOffset[endAccidental] + endOctave * MAX_SEMITONES
