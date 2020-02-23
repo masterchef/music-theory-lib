@@ -38,7 +38,9 @@ namespace NoteTests
         }
 
         [TestCase("A#1", "A#1")]
+        [TestCase("A##1", "A##1")]
         [TestCase("Bb3", "Bb3")]
+        [TestCase("Bbb3", "Bbb3")]
         [TestCase("C#10", "C#10")]
         public void TestNoteCreationFull(string input, string expected)
         {

@@ -37,51 +37,37 @@ namespace IntervalTests
             Assert.AreEqual(quality, interval.quality);
         }
 
-        [TestCase("C", "P1", "C")]
-        [TestCase("C", "M2", "D")]
-        [TestCase("C", "M3", "E")]
-        [TestCase("C", "P4", "F")]
-        [TestCase("C", "P5", "G")]
-        [TestCase("C", "M6", "A")]
-        [TestCase("C", "M7", "B")]
-        [TestCase("D", "P1", "D")]
-        [TestCase("D", "M2", "E")]
-        [TestCase("D", "M3", "F#")]
-        [TestCase("D", "P4", "G")]
-        [TestCase("D", "P5", "A")]
-        [TestCase("D", "M6", "B")]
-        [TestCase("D", "M7", "C#")]
-        [TestCase("D", "P8", "D")]
+        [TestCase("C", "P1", "C4")]
+        [TestCase("C", "M2", "D4")]
+        [TestCase("C", "M3", "E4")]
+        [TestCase("C", "P4", "F4")]
+        [TestCase("C", "P5", "G4")]
+        [TestCase("C", "M6", "A4")]
+        [TestCase("C", "M7", "B4")]
+        [TestCase("D", "P1", "D4")]
+        [TestCase("D", "M2", "E4")]
+        [TestCase("D", "M3", "F#4")]
+        [TestCase("D", "P4", "G4")]
+        [TestCase("D", "P5", "A4")]
+        [TestCase("D", "M6", "B4")]
+        [TestCase("D", "M7", "C#5")]
+        [TestCase("D", "P8", "D5")]
+        [TestCase("D", "P9", "E5")]
+        [TestCase("D", "P10", "F#5")]
+        [TestCase("D", "P11", "G5")]
+        [TestCase("D", "P12", "A5")]
+        [TestCase("D", "P13", "B5")]
+        [TestCase("D", "P14", "C#6")]
+        [TestCase("D", "P15", "D6")]
+        [TestCase("D", "P16", "E6")]
         public void TestEndNoteFromInterval(string fromNote, string intervalName, string result)
         {
             Note note = new Note(fromNote);
             Interval interval = new Interval(intervalName);
             Note endNote = interval.EndNote(note);
-            Assert.AreEqual(result, endNote.ToString());
+            Assert.AreEqual(result, endNote.ToString(true));
         }
 
-        [TestCase("C", "P1", "C")]
-        [TestCase("D", "M2", "C")]
-        [TestCase("E", "M3", "C")]
-        [TestCase("F", "P4", "C")]
-        [TestCase("G", "P5", "C")]
-        [TestCase("A", "M6", "C")]
-        [TestCase("B", "M7", "C")]
-        [TestCase("D", "P1", "D")]
-        [TestCase("E", "M2", "D")]
-        [TestCase("F#", "M3", "D")]
-        [TestCase("G#", "P4", "D")]
-        [TestCase("G", "P5", "D")]
-        [TestCase("A", "M6", "D")]
-        [TestCase("B", "M7", "D")]
-        [TestCase("C#", "P8", "D")]
-        public void TestStartNoteFromInterval(string endNote, string intervalName, string result)
-        {
-            Note note = new Note(endNote);
-            Interval interval = new Interval(intervalName);
-            Note startNote = interval.StartNote(note);
-            Assert.AreEqual(result, startNote.ToString());
-        }
 
         [TestCase("C", "C", Interval.PERFECT)]
         [TestCase("C", "D", Interval.MAJOR)]
@@ -96,7 +82,6 @@ namespace IntervalTests
         [TestCase("C#", "D", Interval.MINOR)]
         [TestCase("C#", "Db", Interval.DIMINISHED)]
         [TestCase("Cb", "D", Interval.AUGMENTED)]
-        [TestCase("C#", "G", Interval.DIMINISHED)]
         [TestCase("C", "Gb", Interval.DIMINISHED)]
         [TestCase("C#", "G", Interval.DIMINISHED)]
         [TestCase("D", "D", Interval.PERFECT)]
@@ -109,12 +94,14 @@ namespace IntervalTests
         [TestCase("D", "Gb", Interval.DIMINISHED)]
         [TestCase("D", "G", Interval.PERFECT)]
         [TestCase("D", "G#", Interval.AUGMENTED)]
+        [TestCase("D", "Abb", Interval.DD)]
         [TestCase("D", "Ab", Interval.DIMINISHED)]
         [TestCase("D", "A", Interval.PERFECT)]
         [TestCase("D", "A#", Interval.AUGMENTED)]
         [TestCase("D", "Bb", Interval.MINOR)]
         [TestCase("D", "B", Interval.MAJOR)]
         [TestCase("D", "B#", Interval.AUGMENTED)]
+        [TestCase("D", "B##", Interval.AA)]
         [TestCase("D", "Cb5", Interval.DIMINISHED)]
         [TestCase("D", "C5", Interval.MINOR)]
         [TestCase("D", "C#5", Interval.MAJOR)]

@@ -12,7 +12,7 @@ namespace MusicTheory
 
         public Note(string input)
         {
-            Regex rx = new Regex(@"^(?<note>[ABCDEFGabcdefg]{1})(?<accidental>[#b])?(?<octave>\d+)?$",
+            Regex rx = new Regex(@"^(?<note>[ABCDEFGabcdefg]{1})(?<accidental>(#|##|b|bb))?(?<octave>\d+)?$",
                 RegexOptions.IgnoreCase);
 
             Match match = rx.Match(input);

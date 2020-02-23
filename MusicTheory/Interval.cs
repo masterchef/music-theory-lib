@@ -15,7 +15,9 @@ namespace MusicTheory
         internal const string MAJOR = "M";
         internal const string MINOR = "m";
         internal const string AUGMENTED = "Aug";
+        internal const string AA = "AA";
         internal const string DIMINISHED = "Dim";
+        internal const string DD = "DD";
 
         public Interval(Note startNote, Note endNote)
         {
@@ -38,7 +40,10 @@ namespace MusicTheory
         }
 
         /**
-         * Validates that given notes make a valid interval
+         * Validates that given interval parameters are valid
+         *
+         * A valid interval must have a pitch count > 0 and quality must be
+         * one of: M|m|P|Dim|Aug|DD|AA
          */
         private void validate()
         {
@@ -55,6 +60,9 @@ namespace MusicTheory
             }
         }
 
+        /**
+         * String version of the interval
+         */
         public override string ToString()
         {
             return $"{quality}{pitchCount}";
@@ -68,21 +76,15 @@ namespace MusicTheory
         {
             int pitchIndex = Utils.PitchIndex(startNote.pitch) + pitchCount - 1;
             string endPitch = Utils.PitchFromIndex(pitchIndex % 7);
-            int octaveOffset = Utils.OctaveFromOffset(startNote.pitch, startNote.octave, pitchCount);
-            int octave = startNote.octave + octaveOffset;
+            int octave = Utils.OctaveFromOffset(startNote.pitch, startNote.octave, pitchCount);
             string accidental = Utils.EndPitchAccidental(startNote, endPitch, octave, quality);
             return new Note($"{endPitch}{accidental}{octave}");
         }
 
-        /**
-         * Returns start Note of a given interval and current Note as
-         * an ending Note
-         */
-        public Note StartNote(Note endNote)
-        {
-            throw new NotImplementedException();
-        }
 
+        /**
+         * Calculates interval quality given two Notes
+         */
         internal static string Quality(Note startNote, Note endNote)
         {
             var quality = MAJOR;
@@ -106,6 +108,9 @@ namespace MusicTheory
                 case 1:
                     quality = AUGMENTED;
                     break;
+                case 2:
+                    quality = AA;
+                    break;
                 case -1:
                     if (quality == PERFECT)
                     {
@@ -120,10 +125,19 @@ namespace MusicTheory
                     if (quality == MAJOR)
                     {
                         quality = DIMINISHED;
+                    } else
+                    {
+                        quality = DD;
+                    }
+                    break;
+                case -3:
+                    if (quality == MAJOR)
+                    {
+                        quality = DD;
                     }
                     else
                     {
-                        throw new InvalidOperationException($"Invalid accidental offset of {intervalOffset} provided.");
+                        throw new InvalidOperationException($"Invalid accidental offset of {intervalOffset} for a PERFECT interval.");
                     }
                     break;
                 default:
