@@ -69,47 +69,98 @@ namespace IntervalTests
         }
 
 
-        [TestCase("C", "C", Interval.PERFECT)]
-        [TestCase("C", "D", Interval.MAJOR)]
-        [TestCase("C", "E", Interval.MAJOR)]
-        [TestCase("C", "F", Interval.PERFECT)]
-        [TestCase("C", "G", Interval.PERFECT)]
-        [TestCase("C", "A", Interval.MAJOR)]
-        [TestCase("C", "B", Interval.MAJOR)]
-        [TestCase("C", "C5", Interval.PERFECT)]
-        [TestCase("C", "C#", Interval.AUGMENTED)]
-        [TestCase("C", "Db", Interval.MINOR)]
-        [TestCase("C#", "D", Interval.MINOR)]
-        [TestCase("C#", "Db", Interval.DIMINISHED)]
-        [TestCase("Cb", "D", Interval.AUGMENTED)]
-        [TestCase("C", "Gb", Interval.DIMINISHED)]
-        [TestCase("C#", "G", Interval.DIMINISHED)]
-        [TestCase("D", "D", Interval.PERFECT)]
-        [TestCase("D", "Eb", Interval.MINOR)]
-        [TestCase("D", "E", Interval.MAJOR)]
-        [TestCase("D", "E#", Interval.AUGMENTED)]
-        [TestCase("D", "Fb", Interval.DIMINISHED)]
-        [TestCase("D", "F", Interval.MINOR)]
-        [TestCase("D", "F#", Interval.MAJOR)]
-        [TestCase("D", "Gb", Interval.DIMINISHED)]
-        [TestCase("D", "G", Interval.PERFECT)]
-        [TestCase("D", "G#", Interval.AUGMENTED)]
+        [TestCase("C", "C", Interval.P)]
+        [TestCase("C", "D", Interval.MAJ)]
+        [TestCase("C", "E", Interval.MAJ)]
+        [TestCase("C", "F", Interval.P)]
+        [TestCase("C", "G", Interval.P)]
+        [TestCase("C", "A", Interval.MAJ)]
+        [TestCase("C", "B", Interval.MAJ)]
+        [TestCase("C", "C5", Interval.P)]
+        [TestCase("C", "C#", Interval.AUG)]
+        [TestCase("C", "Db", Interval.MIN)]
+        [TestCase("C#", "D", Interval.MIN)]
+        [TestCase("C#", "Db", Interval.DIM)]
+        [TestCase("Cb", "D", Interval.AUG)]
+        [TestCase("C", "Gb", Interval.DIM)]
+        [TestCase("C#", "G", Interval.DIM)]
+        [TestCase("D", "D", Interval.P)]
+        [TestCase("D", "Eb", Interval.MIN)]
+        [TestCase("D", "E", Interval.MAJ)]
+        [TestCase("D", "E#", Interval.AUG)]
+        [TestCase("D", "Fb", Interval.DIM)]
+        [TestCase("D", "F", Interval.MIN)]
+        [TestCase("D", "F#", Interval.MAJ)]
+        [TestCase("D", "Gb", Interval.DIM)]
+        [TestCase("D", "G", Interval.P)]
+        [TestCase("D", "G#", Interval.AUG)]
         [TestCase("D", "Abb", Interval.DD)]
-        [TestCase("D", "Ab", Interval.DIMINISHED)]
-        [TestCase("D", "A", Interval.PERFECT)]
-        [TestCase("D", "A#", Interval.AUGMENTED)]
-        [TestCase("D", "Bb", Interval.MINOR)]
-        [TestCase("D", "B", Interval.MAJOR)]
-        [TestCase("D", "B#", Interval.AUGMENTED)]
+        [TestCase("D", "Ab", Interval.DIM)]
+        [TestCase("D", "A", Interval.P)]
+        [TestCase("D", "A#", Interval.AUG)]
+        [TestCase("D", "Bb", Interval.MIN)]
+        [TestCase("D", "B", Interval.MAJ)]
+        [TestCase("D", "B#", Interval.AUG)]
         [TestCase("D", "B##", Interval.AA)]
-        [TestCase("D", "Cb5", Interval.DIMINISHED)]
-        [TestCase("D", "C5", Interval.MINOR)]
-        [TestCase("D", "C#5", Interval.MAJOR)]
+        [TestCase("D", "Cb5", Interval.DIM)]
+        [TestCase("D", "C5", Interval.MIN)]
+        [TestCase("D", "C#5", Interval.MAJ)]
         public void TestQualityName(string startNote, string endNote, string qualityName)
         {
             Note start = new Note(startNote);
             Note end = new Note(endNote);
             Assert.AreEqual(qualityName, Interval.Quality(start, end));
+        }
+
+        [TestCase("C", "C", 1)]
+        [TestCase("C", "D", 2)]
+        [TestCase("C", "E", 3)]
+        [TestCase("C", "F", 4)]
+        [TestCase("C", "G", 5)]
+        [TestCase("C", "A", 6)]
+        [TestCase("C", "B", 7)]
+        [TestCase("C", "C5", 8)]
+        [TestCase("C", "C6", 15)]
+        public void TestPitchCount(string startNote, string endNote, int pitchCount)
+        {
+            Note start = new Note(startNote);
+            Note end = new Note(endNote);
+            Assert.AreEqual(pitchCount, Interval.PitchCount(start, end));
+        }
+
+        [TestCase("C", "C", 0)]
+        [TestCase("C", "C#", 1)]
+        [TestCase("C", "Db", 1)]
+        [TestCase("C", "D", 2)]
+        [TestCase("C", "D#", 3)]
+        [TestCase("C", "Eb", 3)]
+        [TestCase("C", "E", 4)]
+        [TestCase("C", "E#", 5)]
+        [TestCase("C", "Fb", 4)]
+        [TestCase("C", "F", 5)]
+        [TestCase("C", "F#", 6)]
+        [TestCase("C", "Gb", 6)]
+        [TestCase("C", "G", 7)]
+        [TestCase("C", "G#", 8)]
+        [TestCase("C", "Ab", 8)]
+        [TestCase("C", "A", 9)]
+        [TestCase("C", "A#", 10)]
+        [TestCase("C", "Bb", 10)]
+        [TestCase("C", "B", 11)]
+        [TestCase("C", "B#", 12)]
+        [TestCase("C", "C5", 12)]
+        [TestCase("C", "D5", 14)]
+        [TestCase("C", "E5", 16)]
+        [TestCase("C", "F5", 17)]
+        [TestCase("C", "G5", 19)]
+        [TestCase("C", "A5", 21)]
+        [TestCase("C", "B5", 23)]
+        [TestCase("C", "C6", 24)]
+        public void TestSemitoneCount(string startNote, string endNote, int semitoneCount)
+        {
+            Note start = new Note(startNote);
+            Note end = new Note(endNote);
+            Assert.AreEqual(semitoneCount, Interval.SemitoneCount(start, end));
         }
     }
 }

@@ -11,18 +11,18 @@ namespace MusicTheory
         public int pitchCount;
         public string quality;
 
-        internal const string PERFECT = "P";
-        internal const string MAJOR = "M";
-        internal const string MINOR = "m";
-        internal const string AUGMENTED = "Aug";
+        internal const string P = "P";
+        internal const string MAJ = "M";
+        internal const string MIN = "m";
+        internal const string AUG = "Aug";
         internal const string AA = "AA";
-        internal const string DIMINISHED = "Dim";
+        internal const string DIM = "Dim";
         internal const string DD = "DD";
 
         public Interval(Note startNote, Note endNote)
         {
             quality = Interval.Quality(startNote, endNote);
-            pitchCount = Utils.PitchCount(startNote, endNote);
+            pitchCount = PitchCount(startNote, endNote);
             validate();
         }
 
@@ -87,18 +87,19 @@ namespace MusicTheory
          */
         internal static string Quality(Note startNote, Note endNote)
         {
-            var quality = MAJOR;
-            int intervalIndex = (Utils.PitchCount(startNote, endNote) - 1) % 7;
+            var quality = MAJ;
+            // Compute interval index rebased to C Note
+            int intervalIndex = (PitchCount(startNote, endNote) - 1) % Utils.MAX_PITCHES;
             // Only unison, 4th and 5th note (0, 3, 4 indexed from 0) are perfect intervals
             if (Array.IndexOf(new int[] { 0, 3, 4 }, intervalIndex) >= 0)
             {
-                quality = PERFECT;
+                quality = P;
             }
 
             // Find semitone count for a given interval index as reset to 0 or note C
             int naturalSemitoneCount = Utils.NaturalSemitoneCount(intervalIndex);
-            // Actual semitone count needs to be reset to 0 or note C
-            int actualSemitoneCount = Utils.SemitoneCount(startNote, endNote) % 12;
+            // Compute semitone count rebased to C note
+            int actualSemitoneCount = SemitoneCount(startNote, endNote) % Utils.MAX_SEMITONES;
             int intervalOffset = actualSemitoneCount - naturalSemitoneCount;
 
             switch (intervalOffset)
@@ -106,32 +107,32 @@ namespace MusicTheory
                 case 0:
                     break;
                 case 1:
-                    quality = AUGMENTED;
+                    quality = AUG;
                     break;
                 case 2:
                     quality = AA;
                     break;
                 case -1:
-                    if (quality == PERFECT)
+                    if (quality == P)
                     {
-                        quality = DIMINISHED;
+                        quality = DIM;
                     }
                     else
                     {
-                        quality = MINOR;
+                        quality = MIN;
                     }
                     break;
                 case -2:
-                    if (quality == MAJOR)
+                    if (quality == MAJ)
                     {
-                        quality = DIMINISHED;
+                        quality = DIM;
                     } else
                     {
                         quality = DD;
                     }
                     break;
                 case -3:
-                    if (quality == MAJOR)
+                    if (quality == MAJ)
                     {
                         quality = DD;
                     }
@@ -144,6 +145,25 @@ namespace MusicTheory
                     throw new InvalidOperationException($"Invalid accidental offset of {intervalOffset} provided.");
             }
             return quality;
+        }
+
+        /**
+         * Calculates number of pitches between two notes
+         * for example:
+         * C, C -> 1
+         * C, B -> 7
+         */
+        internal static int PitchCount(Note startNote, Note endNote)
+        {
+            return Utils.PitchCount(startNote.pitch, startNote.octave, endNote.pitch, endNote.octave);
+        }
+
+        /**
+         * Counts the number of semitones between two notes
+         */
+        internal static int SemitoneCount(Note start, Note end)
+        {
+            return Utils.SemitoneCount(start.pitch, start.accidental, start.octave, end.pitch, end.accidental, end.octave);
         }
     }
 }

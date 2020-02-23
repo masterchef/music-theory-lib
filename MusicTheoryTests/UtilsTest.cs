@@ -5,56 +5,6 @@ namespace UtilsTest
 {
     public class UtilsTest
     {
-        [TestCase("C", "C", 1)]
-        [TestCase("C", "D", 2)]
-        [TestCase("C", "E", 3)]
-        [TestCase("C", "F", 4)]
-        [TestCase("C", "G", 5)]
-        [TestCase("C", "A", 6)]
-        [TestCase("C", "B", 7)]
-        [TestCase("C", "C5", 8)]
-        [TestCase("C", "C6", 15)]
-        public void TestPitchCount(string startNote, string endNote, int pitchCount)
-        {
-            Note start = new Note(startNote);
-            Note end = new Note(endNote);
-            Assert.AreEqual(pitchCount, Utils.PitchCount(start, end));
-        }
-
-        [TestCase("C", "C", 0)]
-        [TestCase("C", "C#", 1)]
-        [TestCase("C", "Db", 1)]
-        [TestCase("C", "D", 2)]
-        [TestCase("C", "D#", 3)]
-        [TestCase("C", "Eb", 3)]
-        [TestCase("C", "E", 4)]
-        [TestCase("C", "E#", 5)]
-        [TestCase("C", "Fb", 4)]
-        [TestCase("C", "F", 5)]
-        [TestCase("C", "F#", 6)]
-        [TestCase("C", "Gb", 6)]
-        [TestCase("C", "G", 7)]
-        [TestCase("C", "G#", 8)]
-        [TestCase("C", "Ab", 8)]
-        [TestCase("C", "A", 9)]
-        [TestCase("C", "A#", 10)]
-        [TestCase("C", "Bb", 10)]
-        [TestCase("C", "B", 11)]
-        [TestCase("C", "B#", 12)]
-        [TestCase("C", "C5", 12)]
-        [TestCase("C", "D5", 14)]
-        [TestCase("C", "E5", 16)]
-        [TestCase("C", "F5", 17)]
-        [TestCase("C", "G5", 19)]
-        [TestCase("C", "A5", 21)]
-        [TestCase("C", "B5", 23)]
-        [TestCase("C", "C6", 24)]
-        public void TestSemitoneCount(string startNote, string endNote, int semitoneCount)
-        {
-            Note start = new Note(startNote);
-            Note end = new Note(endNote);
-            Assert.AreEqual(semitoneCount, Utils.SemitoneCount(start, end));
-        }
 
         [TestCase("C", "C", 4, "P", "")]
         [TestCase("C#", "C", 4, "P", "#")]

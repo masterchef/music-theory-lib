@@ -10,6 +10,14 @@ namespace MusicTheory
         public string accidental { get;}
         public int octave { get; }
 
+        internal const string NEUTRAL = "";
+        internal const string SHARP = "#";
+        internal const string DBL_SHARP = "##";
+        internal const string FLAT = "b";
+        internal const string DBL_FLAT = "bb";
+
+        
+
         public Note(string input)
         {
             Regex rx = new Regex(@"^(?<note>[ABCDEFGabcdefg]{1})(?<accidental>(#|##|b|bb))?(?<octave>\d+)?$",

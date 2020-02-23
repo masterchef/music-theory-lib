@@ -11,7 +11,9 @@ namespace MusicTheory
         static Dictionary<int, string> semitoneOffsetAccidentals;
         static Dictionary<string, int> qualityAccidentalOffsets;
 
-        
+        internal const int MAX_PITCHES = 7;
+        internal const int MAX_SEMITONES = 12;
+
         static Utils()
         {
             pitchMetadata = new Dictionary<string, int[]>
@@ -30,31 +32,31 @@ namespace MusicTheory
 
             accidentalSemitoneOffset = new Dictionary<string, int>
             {
-                {"bb", -2 },
-                {"b", -1 },
-                {"", 0 },
-                {"#", 1 },
-                {"##", 2 }
+                {Note.DBL_FLAT, -2 },
+                {Note.FLAT, -1 },
+                {Note.NEUTRAL, 0 },
+                {Note.SHARP, 1 },
+                {Note.DBL_SHARP, 2 }
             };
 
             semitoneOffsetAccidentals = new Dictionary<int, string>
             {
-                {-2, "bb" },
-                {-1, "b" },
-                {0, "" },
-                {1, "#" },
-                {2, "##" }
+                {-2, Note.DBL_FLAT },
+                {-1, Note.FLAT },
+                {0, Note.NEUTRAL },
+                {1, Note.SHARP },
+                {2, Note.DBL_SHARP }
             };
 
             qualityAccidentalOffsets = new Dictionary<string, int>
             {
-                {"M", 0 },
-                {"m", -1 },
-                {"P", 0 },
-                {"Dim", -1 },
-                {"Aug", 1 },
-                {"DD", -2 },
-                {"AA", 2 }
+                {Interval.MAJ, 0 },
+                {Interval.MIN, -1 },
+                {Interval.P, 0 },
+                {Interval.DIM, -1 },
+                {Interval.AUG, 1 },
+                {Interval.DD, -2 },
+                {Interval.AA, 2 }
             };
         }
 
@@ -68,24 +70,21 @@ namespace MusicTheory
             return pitchMetadata[pitch][0];
         }
 
-        internal static int SemitoneCount(Note start, Note end)
-        {
-            return SemitoneCount(start.pitch, start.accidental, start.octave, end.pitch, end.accidental, end.octave);
-        }
 
         internal static int SemitoneCount(string startPitch, string startAccidental, int startOctave, string endPitch, string endAccidental, int endOctave)
         {
-            return pitchMetadata[endPitch][1] + accidentalSemitoneOffset[endAccidental] + endOctave * 12
-                - pitchMetadata[startPitch][1] - accidentalSemitoneOffset[startAccidental] - startOctave * 12;
+            return pitchMetadata[endPitch][1] + accidentalSemitoneOffset[endAccidental] + endOctave * MAX_SEMITONES
+                - pitchMetadata[startPitch][1] - accidentalSemitoneOffset[startAccidental] - startOctave * MAX_SEMITONES;
         }
 
         internal static int OctaveFromOffset(string pitch, int pitchOctave, int pitchCount)
         {
             // Because pitchCount includes self we need to subtract 1 to get an accurate offset
             int pitchIndex = Utils.PitchIndex(pitch) +
-                (7 * pitchOctave) +
+                (MAX_PITCHES * pitchOctave) +
                 pitchCount - 1;
-            return pitchIndex / 7;
+            // Find an octave this pitch belongs to
+            return pitchIndex / MAX_PITCHES;
         }
 
         /**
@@ -95,10 +94,15 @@ namespace MusicTheory
         {
             int pitchCount = PitchCount(startNote.pitch, startNote.octave, endPitch, endOctave);
             // Get number of semitones for an interval with certain pitch count and quality offset
-            int qualityAdjustedSemitoneCount = NaturalSemitoneCount((pitchCount - 1) % 7) + qualityAccidentalOffsets[intervalQuality];
+            int qualityAdjustedSemitoneCount = NaturalSemitoneCount((pitchCount - 1) % MAX_PITCHES) + qualityAccidentalOffsets[intervalQuality];
 
             // Find number of semitones between startNote and endPitch without endNote accidental
-            int pitchAdjustedSemitoneCount = SemitoneCount(startNote.pitch, startNote.accidental, startNote.octave, endPitch, "", endOctave) % 12;
+            int pitchAdjustedSemitoneCount = SemitoneCount(startNote.pitch,
+                startNote.accidental,
+                startNote.octave,
+                endPitch,
+                Note.NEUTRAL,
+                endOctave) % MAX_SEMITONES;
 
             // Find accidental offset required to match expected semitone count
             int accidentalOffset = qualityAdjustedSemitoneCount - pitchAdjustedSemitoneCount;
@@ -118,21 +122,14 @@ namespace MusicTheory
             return pitchMetadata[pitchIndex[intervalIndex]][1];
         }
 
-        /**
-         * Calculates number of pitches between two notes including self
-         * for example:
-         * C, C -> 1
-         * C, B -> 7
-         */
-        internal static int PitchCount(Note startNote, Note endNote)
-        {
-            return PitchCount(startNote.pitch, startNote.octave, endNote.pitch, endNote.octave);
-        }
 
+        /**
+         * Calculate number of pitches given starting pitch and octace, and end pitch and endOctave
+         */
         internal static int PitchCount(string startPitch, int startOctave, string endPitch, int endOctave)
         {
-            return pitchMetadata[endPitch][0] + endOctave * 7
-                - pitchMetadata[startPitch][0] - startOctave * 7 + 1;
+            return pitchMetadata[endPitch][0] + endOctave * MAX_PITCHES
+                - pitchMetadata[startPitch][0] - startOctave * MAX_PITCHES + 1;
         }
 
         
