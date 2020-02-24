@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory", "MusicTheory\MusicTheory.csproj", "{D61F03B9-19D4-42DF-AFCA-03EB52616ADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory.Tests", "MusicTheoryTests\MusicTheory.Tests.csproj", "{1D8CFF60-87A4-469E-9236-A1740765827E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "MusicTheoryTests\Tests.csproj", "{1D8CFF60-87A4-469E-9236-A1740765827E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

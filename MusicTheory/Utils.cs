@@ -48,6 +48,8 @@ namespace MusicTheory
                 {2, Note.DBL_SHARP }
             };
 
+            // TODO change this into a function that computes quality offset
+            // given interval index
             qualityAccidentalOffsets = new Dictionary<string, int>
             {
                 {Interval.MAJ, 0 },

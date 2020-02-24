@@ -1,8 +1,6 @@
-﻿using System;
-using MusicTheory;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace IntervalTests
+namespace MusicTheory.IntervalTests
 {
     public class IntervalTests
     {
@@ -21,6 +19,9 @@ namespace IntervalTests
         [TestCase("D", "B", "M6")]
         [TestCase("D", "C#5", "M7")]
         [TestCase("D", "D5", "P8")]
+        [TestCase("G#", "F5", "Dim7")]
+        [TestCase("G#", "F#5", "m7")]
+        [TestCase("G#", "F##5", "M7")]
         public void TestIntervalFromNotes(string fromNote, string toNote, string result)
         {
             Note start = new Note(fromNote);
@@ -38,9 +39,19 @@ namespace IntervalTests
         }
 
         [TestCase("C", "P1", "C4")]
+        [TestCase("C", "Aug1", "C#4")]
+        [TestCase("C", "AA1", "C##4")]
+        [TestCase("C", "Dim2", "Dbb4")]
+        [TestCase("C", "m2", "Db4")]
         [TestCase("C", "M2", "D4")]
+        [TestCase("C", "Aug2", "D#4")]
+        [TestCase("C", "AA2", "D##4")]
         [TestCase("C", "M3", "E4")]
+        [TestCase("C", "DD4", "Fbb4")]
+        [TestCase("C", "Dim4", "Fb4")]
         [TestCase("C", "P4", "F4")]
+        [TestCase("C", "Aug4", "F#4")]
+        [TestCase("C", "AA4", "F##4")]
         [TestCase("C", "P5", "G4")]
         [TestCase("C", "M6", "A4")]
         [TestCase("C", "M7", "B4")]
@@ -52,14 +63,21 @@ namespace IntervalTests
         [TestCase("D", "M6", "B4")]
         [TestCase("D", "M7", "C#5")]
         [TestCase("D", "P8", "D5")]
-        [TestCase("D", "P9", "E5")]
-        [TestCase("D", "P10", "F#5")]
+        [TestCase("D", "M9", "E5")]
+        [TestCase("D", "M10", "F#5")]
         [TestCase("D", "P11", "G5")]
         [TestCase("D", "P12", "A5")]
-        [TestCase("D", "P13", "B5")]
-        [TestCase("D", "P14", "C#6")]
+        [TestCase("D", "M13", "B5")]
+        [TestCase("D", "M14", "C#6")]
         [TestCase("D", "P15", "D6")]
-        [TestCase("D", "P16", "E6")]
+        [TestCase("D", "M16", "E6")]
+        [TestCase("G", "Dim1", "G#4")]
+        [TestCase("G#", "P1", "G#4")]
+        [TestCase("G#", "Aug1", "G##4")]
+        [TestCase("G#", "Dim2", "Ab4")]
+        [TestCase("G#", "m2", "A4")]
+        [TestCase("G#", "M2", "A#4")]
+        [TestCase("G#", "Aug2", "A##4")]
         public void TestEndNoteFromInterval(string fromNote, string intervalName, string result)
         {
             Note note = new Note(fromNote);

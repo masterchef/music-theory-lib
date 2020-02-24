@@ -1,7 +1,6 @@
 using NUnit.Framework;
-using MusicTheory;
 
-namespace NoteTests
+namespace MusicTheory.NoteTests
 {
     public class NoteTests
     {
@@ -58,6 +57,19 @@ namespace NoteTests
             Assert.AreEqual(accidental, note.accidental);
             Assert.AreEqual(octave, note.octave);
             Assert.AreEqual(expected, note.ToString());
+        }
+
+        [TestCase("A", "A", true)]
+        [TestCase("A", "Ab", false)]
+        [TestCase("A", "A#", true)]
+        [TestCase("G#", "G", false)]
+        [TestCase("B", "C", false)]
+        [TestCase("B", "C5", true)]
+        public void TestNoteCompareTo(string startNote, string endNote, bool result)
+        {
+            Note start = new Note(startNote);
+            Note end = new Note(endNote);
+            Assert.AreEqual(result, start.CompareTo(end) >= 0);
         }
     }
 }

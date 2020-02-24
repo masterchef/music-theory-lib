@@ -35,7 +35,7 @@ namespace MusicTheory
 
             GroupCollection groups = match.Groups;
             pitchCount = int.Parse(groups["pitchCount"].Value);
-            quality = groups["quality"].Value.ToUpper();
+            quality = groups["quality"].Value;
             validate();
         }
 
@@ -57,6 +57,25 @@ namespace MusicTheory
             {
                 throw new InvalidOperationException(
                     "Interval quality is not specified.");
+            }
+
+            int intervalIndex = (pitchCount - 1) % Utils.MAX_PITCHES;
+
+            // Validate that the interval quality has a valid quality
+            if (Array.IndexOf(new int[] { 0, 3, 4 }, intervalIndex) >= 0)
+            {
+                if (Array.IndexOf(new string[] {P, AUG, DIM, DD, AA }, quality) < 0)
+                {
+                    throw new InvalidOperationException(
+                    "Invalid quality for a PERFECT interval.");
+                }
+            } else
+            {
+                if (Array.IndexOf(new string[] { MAJ, AUG, MIN, DIM, DD, AA }, quality) < 0)
+                {
+                    throw new InvalidOperationException(
+                    "Invalid quality for a MAJOR interval.");
+                }
             }
         }
 
@@ -101,6 +120,11 @@ namespace MusicTheory
          */
         internal static string Quality(Note startNote, Note endNote)
         {
+            if (startNote.CompareTo(endNote) < 0)
+            {
+                throw new InvalidOperationException("End Note must be larger than start Note.");
+            }
+
             var quality = MAJ;
             // Compute interval index rebased to C Note
             int intervalIndex = (PitchCount(startNote, endNote) - 1) % Utils.MAX_PITCHES;

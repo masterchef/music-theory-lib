@@ -1,7 +1,7 @@
 ﻿using MusicTheory;
 using NUnit.Framework;
 
-namespace UtilsTest
+namespace MusicTheory.UtilsTest
 {
     public class UtilsTest
     {

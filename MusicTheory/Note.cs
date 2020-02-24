@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace MusicTheory
 {
-    public class Note
+    public class Note : IComparable<Note>
     {
         public string pitch { get; }
         public string accidental { get;}
@@ -45,6 +45,14 @@ namespace MusicTheory
                 return string.Format("{0}{1}", pitch, accidental);
             }
             
+        }
+
+        public int CompareTo(Note other)
+        {
+            if (other == null) return 1;
+
+            int currentNoteIndex = Utils.SemitoneCount(pitch, accidental, octave, other.pitch, other.accidental, other.octave);
+            return currentNoteIndex.CompareTo(0);
         }
     }
 }
